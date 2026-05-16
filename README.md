@@ -1,8 +1,6 @@
 # Neriah AI
 
-AI-powered homework grading and learning assistant for African classrooms.
-
-Students submit handwritten work through one of three channels (mobile app, WhatsApp, email). Gemma 4 grades the submission against the teacher's answer key. The teacher reviews and approves on their dashboard. Approved results unlock a personalised tutor and a 100-question arcade-mode study game generated from the student's own notes.
+Neriah AI is an AI-powered homework marking platform for African classrooms. Teachers provide homework questions; Gemma 4 generates the marking scheme automatically. Students submit handwritten work through the mobile app, WhatsApp, or email. Gemma 4 marks each submission against that scheme and builds a weakness profile per student from the results. That weakness profile then drives two adaptive learning tools: a Socratic tutor that guides without giving answers, and Neriah Play, an arcade-mode study game that generates 100 questions from the student's own curriculum and dynamically adjusts game speed based on performance (+5% on correct, -5% on wrong). Teachers get a dashboard to review AI grades, approve results, and query their class data in natural language. Marking creates the data; the data powers the adaptation.
 
 Built for the Gemma 4 Good Hackathon on Kaggle (deadline May 18, 2026).
 
