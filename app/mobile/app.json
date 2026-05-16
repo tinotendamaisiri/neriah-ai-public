@@ -49,7 +49,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "apiBaseUrl": "https://us-central1-neriah-ai-492302.cloudfunctions.net/neriah-grading/api",
+      "apiBaseUrl": "https://us-central1-<GCP_PROJECT_ID>.cloudfunctions.net/neriah-grading/api",
       "eas": {
         "projectId": "f39a6b2a-8bab-4d20-843a-afd459cf1caf"
       }

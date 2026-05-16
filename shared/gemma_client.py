@@ -59,8 +59,8 @@ def _get_vertex_token() -> str:
     Requires `roles/iam.serviceAccountTokenCreator` on the runtime SA
     granted to the runtime SA itself (self-impersonation), set up via:
         gcloud iam service-accounts add-iam-policy-binding \\
-          neriah-ai-sa@neriah-ai-492302.iam.gserviceaccount.com \\
-          --member="serviceAccount:neriah-ai-sa@neriah-ai-492302.iam.gserviceaccount.com" \\
+          neriah-ai-sa@<GCP_PROJECT_ID>.iam.gserviceaccount.com \\
+          --member="serviceAccount:neriah-ai-sa@<GCP_PROJECT_ID>.iam.gserviceaccount.com" \\
           --role="roles/iam.serviceAccountTokenCreator"
     """
     # Source credential: the metadata-server token (cloud-platform scope).
