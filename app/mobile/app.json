@@ -1,0 +1,66 @@
+{
+  "expo": {
+    "name": "Neriah",
+    "slug": "neriah",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "androidStatusBar": {
+      "translucent": false,
+      "backgroundColor": "#ffffff"
+    },
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0D7377"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "app.neriah.mobile",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Neriah needs camera access to photograph student exercise books.",
+        "NSPhotoLibraryUsageDescription": "Neriah needs photo library access to select book images."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0D7377"
+      },
+      "softwareKeyboardLayoutMode": "resize",
+      "package": "app.neriah.mobile",
+      "versionCode": 6,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_MEDIA_IMAGES"
+      ],
+      "blockedPermissions": [
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "apiBaseUrl": "https://us-central1-neriah-ai-492302.cloudfunctions.net/neriah-grading/api",
+      "eas": {
+        "projectId": "f39a6b2a-8bab-4d20-843a-afd459cf1caf"
+      }
+    },
+    "plugins": [
+      "expo-mail-composer",
+      "expo-secure-store",
+      "expo-localization",
+      "@react-native-community/datetimepicker",
+      "react-native-litert-lm",
+      "expo-font"
+    ]
+  }
+}

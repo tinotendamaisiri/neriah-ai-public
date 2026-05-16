@@ -1,0 +1,22 @@
+diff --git a/node_modules/expo-camera/android/src/main/java/expo/modules/camera/ExpoCameraView.kt b/node_modules/expo-camera/android/src/main/java/expo/modules/camera/ExpoCameraView.kt
+index 1ff8116..c04c670 100644
+--- a/node_modules/expo-camera/android/src/main/java/expo/modules/camera/ExpoCameraView.kt
++++ b/node_modules/expo-camera/android/src/main/java/expo/modules/camera/ExpoCameraView.kt
+@@ -496,7 +496,7 @@ class ExpoCameraView(
+     imageCaptureUseCase = imageCaptureBuilder.build()
+ 
+     val videoCapture = createVideoCapture()
+-    imageAnalysisUseCase = createImageAnalyzer()
++    imageAnalysisUseCase = if (shouldScanBarcodes) createImageAnalyzer() else null
+ 
+     val useCases = UseCaseGroup.Builder().apply {
+       addUseCase(preview)
+@@ -504,7 +504,7 @@ class ExpoCameraView(
+         imageCaptureUseCase?.let {
+           addUseCase(it)
+         }
+-        imageAnalysisUseCase?.let {
++        if (shouldScanBarcodes) imageAnalysisUseCase?.let {
+           addUseCase(it)
+         }
+       } else {

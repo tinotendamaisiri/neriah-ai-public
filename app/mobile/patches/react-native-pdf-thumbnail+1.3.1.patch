@@ -1,0 +1,38 @@
+diff --git a/node_modules/react-native-pdf-thumbnail/android/src/main/AndroidManifest.xml b/node_modules/react-native-pdf-thumbnail/android/src/main/AndroidManifest.xml
+index 9ae7745..bb88ddf 100644
+--- a/node_modules/react-native-pdf-thumbnail/android/src/main/AndroidManifest.xml
++++ b/node_modules/react-native-pdf-thumbnail/android/src/main/AndroidManifest.xml
+@@ -1,3 +1,3 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+-          package="org.songsterq.pdfthumbnail">
++          package="com.pdfthumbnail">
+ </manifest>
+diff --git a/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailModule.kt b/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailModule.kt
+index 921b578..84c9299 100644
+--- a/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailModule.kt
++++ b/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailModule.kt
+@@ -1,4 +1,4 @@
+-package org.songsterq.pdfthumbnail
++package com.pdfthumbnail
+ 
+ import android.content.ContentResolver
+ import android.graphics.Bitmap
+@@ -98,7 +98,7 @@ class PdfThumbnailModule(reactContext: ReactApplicationContext) :
+     currentPage.close()
+ 
+     // Some bitmaps have transparent background which results in a black thumbnail. Add a white background.
+-    val bitmapWhiteBG = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
++    val bitmapWhiteBG = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config ?: Bitmap.Config.ARGB_8888)
+     val canvas = Canvas(bitmapWhiteBG)
+     canvas.drawBitmap(bitmap, 0f, 0f, null)
+     bitmap.recycle()
+diff --git a/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailPackage.kt b/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailPackage.kt
+index aa6669c..cbc02a5 100644
+--- a/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailPackage.kt
++++ b/node_modules/react-native-pdf-thumbnail/android/src/main/java/org/songsterq/pdfthumbnail/PdfThumbnailPackage.kt
+@@ -1,4 +1,4 @@
+-package org.songsterq.pdfthumbnail
++package com.pdfthumbnail
+ 
+ import com.facebook.react.ReactPackage
+ import com.facebook.react.bridge.NativeModule
