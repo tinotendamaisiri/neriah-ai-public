@@ -130,13 +130,10 @@ export function useModel(): ModelContextValue {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 /**
- * Which variant a logged-in user gets. Both roles now share E2B:
+ * Which variant a logged-in user gets. Both roles share Gemma 4 E2B:
  *
- *   - Most African teacher phones can't run E4B (need 8+ GB RAM); leaving
- *     them on cloud-only for everything excludes the majority of the
- *     market from offline grading entirely.
- *   - E2B handles short-answer text grading well; the gap to E4B/cloud
- *     is biggest on math, where we now block offline grading explicitly
+ *   - E2B handles short-answer text grading well. The gap to cloud Gemma
+ *     26B is biggest on math, where we block offline grading explicitly
  *     in PageReviewScreen and require the teacher to submit online for
  *     math homeworks.
  *
@@ -269,9 +266,8 @@ function ModelProviderNative({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      // Hard gate: device must pass the check for the role's required
-      // variant. No downgrades — a teacher whose phone can't run E4B is
-      // cloud-only, never silently moved to E2B.
+      // Hard gate: device must pass the check for the required variant.
+      // A phone that can't run E2B is cloud-only.
       const ok = await canRunVariant(required);
       if (!ok) {
         setVariant(null);
@@ -305,9 +301,8 @@ function ModelProviderNative({ children }: { children: React.ReactNode }) {
     const cap = await detectCapability();
     setCapability(cap);
 
-    // Role-aware: a teacher needs E4B, a student needs E2B. If the device
-    // can't run the variant their role requires, this is a cloud-only
-    // device — nothing to prompt for, nothing to download.
+    // Both roles need E2B. If the device can't run it, this is a
+    // cloud-only device, nothing to prompt for, nothing to download.
     const required = requiredVariantForRole(role);
     if (!required) return;
     const ok = await canRunVariant(required);

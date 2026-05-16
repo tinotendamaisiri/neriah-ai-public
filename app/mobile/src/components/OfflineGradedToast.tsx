@@ -4,8 +4,9 @@
 //
 // Silent when the teacher is online (MarkResult.locally_graded is false/
 // undefined), so there's no cognitive overhead during the normal cloud
-// flow. Only speaks up when the result came from the on-device E4B model
-// so the teacher knows accuracy may differ from their usual cloud grade.
+// flow. Only speaks up when the result came from the on-device Gemma 4
+// E2B model so the teacher knows accuracy may differ from their usual
+// cloud grade.
 //
 // Timing: 300 ms fade in → 4400 ms visible → 300 ms fade out → unmount.
 // One-shot per mount — re-rendering with visible=true again won't restart
@@ -17,7 +18,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { COLORS } from '../constants/colors';
 
 interface OfflineGradedToastProps {
-  /** True when the MarkResult was produced by the on-device E4B model. */
+  /** True when the MarkResult was produced by the on-device Gemma 4 E2B model. */
   visible: boolean;
 }
 

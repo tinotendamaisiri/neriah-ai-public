@@ -1,29 +1,18 @@
 // src/services/deviceCapabilities.ts
 // Device capability detection — runs at every app launch.
 //
-// Checks whether the device can run a specific Gemma 4 variant. The
-// caller (ModelContext) passes the variant their user's role *needs*:
-//   - teacher → 'e4b' (full grading model)
-//   - student → 'e2b' (Socratic tutor model)
-//
-// There is no graceful "downgrade" path. If a teacher's device can't run
-// E4B, we return cloud-only — we never give them E2B as a fallback,
-// because E2B is the wrong model for grading and the teacher would just
-// get worse results silently.
+// Checks whether the device can run the Gemma 4 E2B model. If it can't,
+// the user is cloud-only.
 //
 // Thresholds are based on empirical data, not vendor specs:
 //   - Samsung Galaxy A51 (3.65 GB total, ~1 GB available) crashes during
 //     vision-executor compile when loading E2B (2.58 GB). So the realistic
 //     E2B floor is well above 3.65 GB; we set it at 6 GB total RAM.
-//   - E4B (3.65 GB on disk, ~5 GB peak working set during compile) needs
-//     8 GB total RAM to leave headroom for Android system overhead.
-//   - Storage thresholds match each model's file size + ~1 GB temp room
+//   - Storage threshold matches the model's file size + ~1 GB temp room
 //     for the download.
 //
 // Fields stored in SecureStore:
-//   - device_capability        — kept for backward compat; the highest
-//                                tier the device can run, regardless of
-//                                role. Now derived from canRunVariant().
+//   - device_capability        — the tier the device can run.
 // Fresh detection on every launch — never returns stale cached values.
 
 import * as SecureStore from 'expo-secure-store';
@@ -33,7 +22,7 @@ import { Platform } from 'react-native';
 
 import type { ModelVariant } from './modelManager';
 
-export type DeviceCapability = 'e4b-capable' | 'e2b-capable' | 'cloud-only';
+export type DeviceCapability = 'e2b-capable' | 'cloud-only';
 
 export const CAPABILITY_STORE_KEY = 'device_capability';
 
@@ -47,11 +36,6 @@ const REQUIREMENTS: Record<ModelVariant, { ramGB: number; freeStorageGB: number 
   // overhead + ~0.5 GB safety = 6 GB total. Galaxy A51 (3.65 GB) sits
   // below this floor — empirically confirmed to crash at vision compile.
   e2b: { ramGB: 6, freeStorageGB: 3 },
-  // Gemma 4 E4B file is 3.65 GB. Compile peak ~5 GB. + ~2 GB system
-  // overhead + ~1 GB safety = 8 GB. Mid-range Androids (Galaxy A55, Pixel
-  // 7a at 8 GB) sit right at the edge; flagships (S24, Pixel 8 Pro at
-  // 12+ GB) clear it comfortably.
-  e4b: { ramGB: 8, freeStorageGB: 4.5 },
 };
 
 function bytesToGB(bytes: number): number {
@@ -122,10 +106,6 @@ export async function detectCapability(): Promise<DeviceCapability> {
     await _persist('cloud-only');
     return 'cloud-only';
   }
-  if (await canRunVariant('e4b')) {
-    await _persist('e4b-capable');
-    return 'e4b-capable';
-  }
   if (await canRunVariant('e2b')) {
     await _persist('e2b-capable');
     return 'e2b-capable';
@@ -144,7 +124,7 @@ export const detectAndStoreCapability = detectCapability;
 export async function getStoredCapability(): Promise<DeviceCapability | null> {
   try {
     const stored = await SecureStore.getItemAsync(CAPABILITY_STORE_KEY);
-    if (stored === 'e4b-capable' || stored === 'e2b-capable' || stored === 'cloud-only') {
+    if (stored === 'e2b-capable' || stored === 'cloud-only') {
       return stored;
     }
     return null;

@@ -578,7 +578,7 @@ export interface OcrPageInput {
 }
 
 /**
- * Build the grading prompt for the E4B teacher model.
+ * Build the grading prompt for the on-device Gemma 4 E2B model.
  * Asks Gemma to grade OCR'd student text against the answer key and return
  * a JSON array of verdicts that mirrors the server-side GradingVerdict shape.
  *

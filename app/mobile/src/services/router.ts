@@ -4,7 +4,7 @@
 //
 // Decision logic:
 //   isOnline                       → "cloud"       always prefer 26B Gemma when connected
-//   !isOnline  AND  modelLoaded    → "on-device"   E4B (teacher) / E2B (student) via LiteRT
+//   !isOnline  AND  modelLoaded    → "on-device"   Gemma 4 E2B via LiteRT
 //   !isOnline  AND  !modelLoaded   → "unavailable" show "Connect to continue", queue if possible
 //
 // Web is always "cloud" — short-circuits before any hardware or network check.
@@ -74,11 +74,10 @@ export function routeRequest(isOnline: boolean, modelLoaded: boolean): AIRoute {
 /**
  * Returns the LiteRT model variant needed for a given request type.
  *
- * As of the E4B-removal pass, both teacher and student paths use E2B
- * regardless of request type. Math grading is gated separately in
- * PageReviewScreen — when offline + math, the submission is queued for
- * cloud replay rather than fed to E2B (which can't reliably grade
- * multi-step math).
+ * Both teacher and student paths use E2B regardless of request type. Math
+ * grading is gated separately in PageReviewScreen: when offline + math,
+ * the submission is queued for cloud replay rather than fed to E2B
+ * (which can't reliably grade multi-step math).
  *
  * Kept as a function (not a const) so callers can be retrofitted later
  * if we re-introduce per-task model selection.
@@ -164,7 +163,7 @@ export async function queueMarkingScan(
 // ── On-device execution helpers ───────────────────────────────────────────────
 
 /**
- * Run grading via the on-device E4B LiteRT model against already-OCR'd pages.
+ * Run grading via the on-device LiteRT model against already-OCR'd pages.
  *
  * Callers that have image URIs (not pre-extracted text) should use
  * gradeScanOffline() instead — it runs OCR first, then calls this.
@@ -274,14 +273,15 @@ export function dedupeAndClampVerdicts(
 
 /**
  * Full offline grading pipeline: OCR each page, send the text to the local
- * E4B model, parse + sanitise the JSON response, apply dedup + clamp rules.
+ * Gemma 4 E2B model, parse + sanitise the JSON response, apply dedup + clamp
+ * rules.
  *
  * Returns the same shape the cloud would (minus image URLs — those are
  * filled in by the local annotator in Phase D).
  *
  * Throws:
  *   - OcrUnavailableError   if MLKit isn't linked
- *   - Error('No model loaded') if the E4B model hasn't been loaded yet
+ *   - Error('No model loaded') if the on-device model hasn't been loaded yet
  *   - Error on JSON parse failure
  */
 export async function gradeScanOffline(args: {

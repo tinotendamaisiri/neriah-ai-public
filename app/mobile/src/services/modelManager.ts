@@ -19,9 +19,8 @@
 //     circular dep; litert imports ensureModelDownloaded from here).
 //   isModelOnDisk(variant) — real file-size check on the cached file.
 //
-// Models served from the LiteRT community on HuggingFace:
-//   Student (E2B): ~2.0 GB
-//   Teacher (E4B): ~2.96 GB
+// Model served from the LiteRT community on HuggingFace:
+//   Gemma 4 E2B (.litertlm): 2.58 GB
 
 import * as FileSystem from 'expo-file-system/legacy';
 import * as SecureStore from 'expo-secure-store';
@@ -36,7 +35,7 @@ const KEEP_AWAKE_TAG = 'neriah-model-download';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type ModelVariant = 'e2b' | 'e4b';
+export type ModelVariant = 'e2b';
 
 // ── SecureStore keys (unchanged — ModelContext reads these directly) ─────────
 
@@ -52,13 +51,12 @@ function resumableKey(variant: ModelVariant): string {
 }
 
 // ── Model URLs (LiteRT-LM community on HuggingFace) ──────────────────────────
-// Same URLs the library ships as GEMMA_4_E2B_IT / GEMMA_4_E4B_IT constants;
-// inlined so this module doesn't have to import from the native-binding-
-// dependent react-native-litert-lm (which crashes at module-load in Expo Go).
+// Same URL the library ships as the GEMMA_4_E2B_IT constant; inlined so this
+// module doesn't have to import from the native-binding-dependent
+// react-native-litert-lm (which crashes at module-load in Expo Go).
 
 export const MODEL_URLS: Record<ModelVariant, string> = {
   e2b: 'https://huggingface.co/litert-community/gemma-4-E2B-it-litert-lm/resolve/main/gemma-4-E2B-it.litertlm',
-  e4b: 'https://huggingface.co/litert-community/gemma-4-E4B-it-litert-lm/resolve/main/gemma-4-E4B-it.litertlm',
 };
 
 // ── Local cache paths ─────────────────────────────────────────────────────────
@@ -69,7 +67,6 @@ export const MODEL_DIR = `${FileSystem.documentDirectory ?? ''}models/`;
 
 export const MODEL_PATHS: Record<ModelVariant, string> = {
   e2b: `${MODEL_DIR}gemma-4-E2B-it.litertlm`,
-  e4b: `${MODEL_DIR}gemma-4-E4B-it.litertlm`,
 };
 
 // ── Display metadata (unchanged) ─────────────────────────────────────────────
@@ -87,20 +84,16 @@ export const MODEL_PATHS: Record<ModelVariant, string> = {
 // matches HF's stated 2.58 GB.
 export const MODEL_SIZES_BYTES: Record<ModelVariant, number> = {
   e2b: 2_583_082_648,   // 2.58 GB
-  e4b: 3_650_000_000,   // ~3.65 GB (HF README)
 };
 
 export const MODEL_SIZE_LABEL: Record<ModelVariant, string> = {
   e2b: '2 GB',
-  e4b: '3 GB',
 };
 
-// Both roles share E2B as of the E4B-removal pass — neutral label so the
-// Settings copy reads cleanly for teachers and students alike. E4B's entry
-// is kept for type completeness; nothing in the live code path reads it.
+// Single neutral label so the Settings copy reads cleanly for both teachers
+// and students.
 export const MODEL_DISPLAY_NAME: Record<ModelVariant, string> = {
   e2b: 'Neriah Offline AI (Gemma 4 E2B)',
-  e4b: 'Neriah Offline AI (Gemma 4 E4B)',
 };
 
 // ── Active download tracking ──────────────────────────────────────────────────

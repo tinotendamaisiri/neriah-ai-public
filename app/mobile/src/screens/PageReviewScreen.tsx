@@ -308,7 +308,7 @@ export default function PageReviewScreen() {
   //                 the app is working as designed.
   //
   //   on-device   → Phase B+ hook: run grading through the loaded LiteRT
-  //                 E4B model locally and return a MarkResult without
+  //                 Gemma 4 E2B model locally and return a MarkResult without
   //                 touching the network. Until the native module is
   //                 re-linked, this falls through to the same offline
   //                 queue as 'unavailable' but with a different user-
