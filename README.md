@@ -30,7 +30,7 @@ This repo IS the submission. The hackathon entry is the working product, not a w
 
 ```
 neriah-ai/
-├── main.py + functions/ + shared/     <- Cloud Functions backend (Flask blueprints)
+├── functions/ + shared/               <- Cloud Functions backend (Flask blueprints)
 ├── app/mobile/                        <- React Native + Expo app
 │   ├── src/play/                      <- Neriah Play (PlayNavigator, runtime, scenes)
 │   └── src/services/litert.ts         <- On-device Gemma 4 wrapper
