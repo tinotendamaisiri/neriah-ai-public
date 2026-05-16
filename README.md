@@ -8,12 +8,12 @@ Built for the Gemma 4 Good Hackathon on Kaggle (deadline May 18, 2026).
 
 This repo IS the submission. The hackathon entry is the working product, not a walkthrough notebook: a Cloud Functions backend (`functions/` + `shared/`), a React Native + Expo mobile app (`app/mobile/`), the dataset-extraction pipelines that power the on-device fine-tune (`tools/dataset/`), and a pytest suite that locks the contracts (`tests/`). Build and run instructions are in the `Running locally` section below.
 
-### Core tech (the parts the hackathon is judging)
+### Core technology
 
 - **Two-tier Gemma 4 inference.** Cloud uses Vertex AI Gemma 4 26B for grading and the teacher assistant. On-device uses LiteRT-LM with Gemma 4 E2B (`react-native-litert-lm` 0.3.4, vendored Bazel rebuild from main) for offline grading and the student tutor. A router (`shared/router.py`, `app/mobile/src/services/router.ts`) picks cloud-first with on-device fallback.
 - **Single multimodal grading call.** No separate OCR step. `functions/mark.py` sends the page image straight to Gemma 4 with the answer key, gets back per-question verdicts, awarded marks, and feedback in one round trip.
 - **Curriculum RAG.** 30 Zimbabwean syllabus PDFs (Primary, O-Level, A-Level) chunked, embedded via Vertex `text-embedding-004`, and stored in a Firestore vector collection. Pulled into every grading and tutor prompt via `shared/vector_db.py`.
-- **Neriah Play.** Student-side arcade study mode. The student drops in notes, three-tier same-domain generator in `shared/play_generator.py` produces 100 multiple-choice questions, four `@shopify/react-native-skia` games render the quiz as gameplay (Lane Runner, Stacker, Blaster, Snake). Bidirectional speed (+5% on correct, -5% on wrong) keeps tension calibrated to the player.
+- **Neriah Play.** After marking, Gemma 4 analyses each student's weakness profile and recommends a study game tailored to their gaps. The student can also drop in their own notes and the three-tier same-domain generator in `shared/play_generator.py` produces 100 multiple-choice questions. Four `@shopify/react-native-skia` games render the quiz as gameplay (Lane Runner, Stacker, Blaster, Snake). Bidirectional speed (+5% on correct, -5% on wrong) keeps tension calibrated to the player.
 - **Socratic tutor.** `functions/tutor.py` runs a no-direct-answers prompt with hints and follow-up questions, grounded in the student's weakness profile (`shared/weakness_tracker.py`) and the curriculum RAG.
 - **Three submission channels share one backend.** Mobile app, WhatsApp Cloud API state machine, and a Zoho IMAP poller all funnel into the same grading pipeline.
 - **Offline resilience.** Resumable model downloads with `savable()` snapshots and 50-attempt exponential backoff. Pre-graded marking on the offline path, replayed when online. Optimistic mutation queue with revert-on-error.
@@ -30,15 +30,15 @@ This repo IS the submission. The hackathon entry is the working product, not a w
 
 ```
 neriah-ai/
-├── functions/ + shared/               ← Cloud Functions backend (Flask blueprints)
-├── app/mobile/                        ← React Native + Expo app
-│   ├── src/play/                      ← Neriah Play (PlayNavigator, runtime, scenes)
-│   └── src/services/litert.ts         ← On-device Gemma 4 wrapper
-├── tools/dataset/                     ← Fine-tune extractor pipelines
-├── tests/                             ← pytest suite (~500 tests)
-├── syllabuses/                        ← 30 ZIMSEC curriculum PDFs (public)
-├── samples/                           ← Demo input images
-└── scripts/                           ← One-shot ops (RAG indexer, syllabus chunker)
+├── main.py + functions/ + shared/     <- Cloud Functions backend (Flask blueprints)
+├── app/mobile/                        <- React Native + Expo app
+│   ├── src/play/                      <- Neriah Play (PlayNavigator, runtime, scenes)
+│   └── src/services/litert.ts         <- On-device Gemma 4 wrapper
+├── tools/dataset/                     <- Fine-tune extractor pipelines
+├── tests/                             <- pytest suite (~500 tests)
+├── syllabuses/                        <- 30 ZIMSEC curriculum PDFs (public)
+├── samples/                           <- Demo input images
+└── scripts/                           <- One-shot ops (RAG indexer, syllabus chunker)
 ```
 
 ## Running locally
