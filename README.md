@@ -6,7 +6,7 @@ Built for the Gemma 4 Good Hackathon on Kaggle (deadline May 18, 2026).
 
 ## What's in this submission
 
-This repo is the Kaggle public submission. See `kaggle_notebook.ipynb` for the end-to-end walkthrough; the rest of the repo backs that notebook with the production source.
+This repo IS the submission. The hackathon entry is the working product, not a walkthrough notebook: a Cloud Functions backend (`functions/` + `shared/`), a React Native + Expo mobile app (`app/mobile/`), the dataset-extraction pipelines that power the on-device fine-tune (`tools/dataset/`), and a pytest suite that locks the contracts (`tests/`). Build and run instructions are in the `Running locally` section below.
 
 ### Core tech (the parts the hackathon is judging)
 
@@ -30,9 +30,7 @@ This repo is the Kaggle public submission. See `kaggle_notebook.ipynb` for the e
 
 ```
 neriah-ai/
-├── kaggle_notebook.ipynb              ← Kaggle submission entry point
-├── notebooks/neriah_demo.ipynb        ← Standalone OCR + grading + annotation demo
-├── main.py + functions/ + shared/     ← Cloud Functions backend (Flask blueprints)
+├── functions/ + shared/               ← Cloud Functions backend (Flask blueprints)
 ├── app/mobile/                        ← React Native + Expo app
 │   ├── src/play/                      ← Neriah Play (PlayNavigator, runtime, scenes)
 │   └── src/services/litert.ts         ← On-device Gemma 4 wrapper
