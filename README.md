@@ -4,6 +4,28 @@ Neriah AI is an AI-powered homework marking platform for African classrooms. Tea
 
 Built for the Gemma 4 Good Hackathon on Kaggle (deadline May 18, 2026).
 
+## Try the app
+
+| Platform | Link |
+|---|---|
+| Android APK | https://drive.google.com/file/d/1IlwX9qXFheCRhyVvv3zVKBFY8clnkZVY/view?usp=sharing |
+| iOS (TestFlight) | https://testflight.apple.com/join/pTjp8Ded |
+| Web | https://neriah.ai |
+
+Demo accounts (no signup needed):
+Teacher: +1 347 445 9587 — OTP: 000000
+Student: +1 123 456 7890 — OTP: 000000
+
+## Architecture
+
+![Neriah AI architecture](screenshots/neriah_architecture_landscape.png)
+
+## Screenshots
+
+![Teacher flow](screenshots/collage_01_teacher_flow.png)
+![Student flow](screenshots/collage_02_student_flow.png)
+![Neriah Play](screenshots/collage_03_neriah_play.png)
+
 ## What's in this submission
 
 This repo IS the submission. The hackathon entry is the working product, not a walkthrough notebook: a Cloud Functions backend (`functions/` + `shared/`), a React Native + Expo mobile app (`app/mobile/`), the dataset-extraction pipelines that power the on-device fine-tune (`tools/dataset/`), and a pytest suite that locks the contracts (`tests/`). Build and run instructions are in the `Running locally` section below.
